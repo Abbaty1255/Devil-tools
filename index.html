@@ -1,1 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEVIL*TOOLS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+        
+        body {
+            background: #000;
+            color: #00ff41;
+            font-family: 'VT323', monospace;
+        }
+        
+        .crt::after {
+            content: ''; position: absolute; inset: 0;
+            background: repeating-linear-gradient(transparent 0px, transparent 2px, rgba(0,255,65,0.05) 2px, rgba(0,255,65,0.05) 4px);
+            pointer-events: none;
+            animation: flicker 0.15s infinite alternate;
+        }
 
+        @keyframes flicker {
+            0% { opacity: 0.95; }
+            100% { opacity: 1; }
+        }
+
+        .warning-note {
+            animation: shake 0.8s infinite alternate;
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0) rotate(-1deg); }
+            100% { transform: translateX(4px) rotate(1deg); }
+        }
+
+        .float-up-down {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .input-field {
+            background: #000;
+            border: 3px solid #00ff41;
+            padding: 12px;
+            width: 100%;
+            color: #00ff41;
+            font-family: 'VT323', monospace;
+        }
+
+        .logo-container {
+            width: 110px;
+            height: 110px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 25px rgba(0, 255, 65, 0.4);
+        }
+    </style>
+</head>
+<body class="crt min-h-screen relative">
+    <canvas id="matrix" class="fixed inset-0 opacity-20"></canvas>
+
+    <!-- Loading -->
+    <div id="loadingOverlay" class="hidden fixed inset-0 bg-black/95 z-[10000] flex flex-col items-center justify-center gap-8">
+        <div class="w-24 h-24 border-8 border-[#003322] border-t-[#00ff41] rounded-full animate-spin"></div>
+        <div class="text-3xl" id="loadingText">CONNECTING TO SHADOW SERVER...</div>
+        <div class="w-96 h-8 border-2 border-[#00ff41] relative overflow-hidden">
+            <div id="progressFill" class="absolute h-full bg-[#00ff41] w-0 transition-all duration-200"></div>
+        </div>
+    </div>
+
+    <div class="relative z-10">
+        <!-- Header with updated logo -->
+        <header class="border-b-4 border-green-500 py-6 bg-black">
+            <div class="max-w-6xl mx-auto px-6 flex items-center gap-6">
+                <!-- Updated Logo - Square, no red border -->
+                <div class="logo-container">
+                    <img src="https://i.ibb.co/XfHQfdGV/IMG-5519.jpg" 
+                         alt="Hacker" 
+                         class="w-full h-full object-cover">
+                </div>
+                <h1 class="text-5xl tracking-[6px] text-red-500">DEVIL<span class="text-green-400">*</span>TOOLS</h1>
+            </div>
+        </header>
+
+        <!-- Landing Page with Notes -->
+        <div class="max-w-6xl mx-auto px-6 py-12">
+            <div class="text-center mb-12">
+                <h2 class="text-6xl text-red-500 mb-6">ENTER THE UNDERGROUND</h2>
+                <p class="text-xl text-green-400">100% UNDETECTABLE • NO TRACES</p>
+            </div>
+
+            <!-- Warning Notes -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+                <div class="warning-note border-4 border-red-500 bg-black p-6 text-center float-up-down">
+                    <span class="text-red-500 text-xl">⚠️ WARNING</span><br>
+                   Make sure you enter correct details 
+                </div>
+                <div class="warning-note border-4 border-yellow-400 bg-black p-6 text-center float-up-down" style="animation-delay: 0.5s">
+                    <span class="text-yellow-400 text-xl">CAUTION</span><br>
+                    ALL TRANSACTIONS ARE MONITORED BY SYSTEM
+                </div>
+                <div class="warning-note border-4 border-red-500 bg-black p-6 text-center float-up-down" style="animation-delay: 1s">
+                    <span class="text-red-500 text-xl">IMPORTANT</span><br>
+                    AFTER PAYMENT SEND PROOF TO:<br>
+                    <a href="mailto:KristinMckeend@usa.com" class="text-yellow-400">KristinMckeend@usa.com</a>
+                </div>
+            </div>
+
+            <div class="text-center text-red-400 mb-8 text-xl tracking-widest">CHOOSE YOUR WEAPON</div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div onclick="startTool(0)" class="cursor-pointer border-4 border-green-400 p-8 hover:border-red-500 transition-all">
+                    <div class="text-6xl mb-4">🔓</div>
+                    <h3 class="text-2xl">Disconnect BVN from Loan Apps</h3>
+                </div>
+                <div onclick="startTool(1)" class="cursor-pointer border-4 border-green-400 p-8 hover:border-red-500 transition-all">
+                    <div class="text-6xl mb-4">💳</div>
+                    <h3 class="text-2xl">Withdrawal from ATM Without PIN & OTP</h3>
+                </div>
+                <div onclick="startTool(2)" class="cursor-pointer border-4 border-green-400 p-8 hover:border-red-500 transition-all">
+                    <div class="text-6xl mb-4">🔑</div>
+                    <h3 class="text-2xl">Access Account with Only BVN</h3>
+                </div>
+                <div onclick="startTool(3)" class="cursor-pointer border-4 border-green-400 p-8 hover:border-red-500 transition-all">
+                    <div class="text-6xl mb-4">👤</div>
+                    <h3 class="text-2xl">Access Account Without Face Verification</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Input Modal -->
+    <div id="inputModal" class="hidden fixed inset-0 bg-black/95 z-50 flex items-center justify-center">
+        <div class="border-4 border-green-400 bg-black p-10 max-w-lg w-full" id="inputContent"></div>
+    </div>
+
+    <!-- Progress Modal -->
+    <div id="progressModal" class="hidden fixed inset-0 bg-black/95 z-50 flex items-center justify-center">
+        <div class="border-4 border-green-400 bg-black p-12 max-w-lg w-full text-center">
+            <div id="progressIcon" class="text-8xl mb-6"></div>
+            <h3 id="progressTitle" class="text-3xl mb-10"></h3>
+            <div id="progressText" class="text-xl min-h-32"></div>
+            <button id="purchaseButton" onclick="showPaymentModal()" 
+                    class="hidden mt-8 w-full py-6 border-4 border-red-500 text-2xl">PURCHASE TO UNLOCK - N5,000</button>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="hidden fixed inset-0 bg-black/95 z-50 flex items-center justify-center">
+        <div class="border-4 border-green-400 bg-black p-10 max-w-md w-full text-center">
+            <h3 class="text-3xl mb-6 text-red-500">PAYMENT REQUIRED</h3>
+            <p class="mb-8">N5,000 ONLY</p>
+            
+            <div class="border border-green-400 p-8 text-left mb-8">
+                Abbas Salihu Abubakar<br>
+                5074435427<br>
+                Moniepoint MFB
+            </div>
+            
+            <button onclick="copyDetails()" class="block w-full py-4 border border-green-400 mb-4">COPY ACCOUNT DETAILS</button>
+            <button onclick="finishPurchase()" class="block w-full py-5 bg-green-500 text-black font-bold">PURCHASE DONE</button>
+        </div>
+    </div>
+
+    <script>
+        // Matrix Rain
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        resize(); window.addEventListener('resize', resize);
+        setInterval(() => {
+            ctx.fillStyle = 'rgba(0,0,0,0.08)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#00ff41';
+            ctx.font = '15px VT323';
+            for (let i = 0; i < 45; i++) {
+                ctx.fillText(Math.random() > 0.5 ? '1' : '0', Math.random()*canvas.width, Math.random()*canvas.height);
+            }
+        }, 55);
+
+        let currentTool = 0;
+
+        function showLoading(text, duration = 13000) {
+            const overlay = document.getElementById('loadingOverlay');
+            document.getElementById('loadingText').textContent = text;
+            overlay.classList.remove('hidden');
+            
+            const fill = document.getElementById('progressFill');
+            fill.style.width = '0%';
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 100 / (duration / 70);
+                fill.style.width = Math.min(progress, 100) + '%';
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => overlay.classList.add('hidden'), 700);
+                }
+            }, 70);
+        }
+
+        function startTool(tool) {
+            currentTool = tool;
+            let html = '';
+            
+            if (tool === 0) {
+                html = `
+                    <h3 class="text-3xl mb-8 text-red-500">BVN DISCONNECT</h3>
+                    <input id="bvnField" maxlength="11" class="input-field text-center text-2xl mb-8" placeholder="ENTER 11 DIGIT BVN">
+                    <button onclick="processInput()" class="w-full py-6 border-4 border-red-500 text-2xl">START DISCONNECT</button>
+                `;
+            } else if (tool === 1) {
+                html = `
+                    <h3 class="text-3xl mb-8 text-red-500">ATM WITHDRAWAL</h3>
+                    <input id="cardNumber" maxlength="16" class="input-field mb-4" placeholder="CARD NUMBER (16 DIGITS)">
+                    <div class="grid grid-cols-2 gap-4">
+                        <input id="cvv" maxlength="3" class="input-field" placeholder="CVV">
+                        <input id="expiry" maxlength="5" class="input-field" placeholder="MM/YY">
+                    </div>
+                    <button onclick="processInput()" class="mt-8 w-full py-6 border-4 border-red-500 text-2xl">INITIATE WITHDRAWAL</button>
+                `;
+            } else if (tool === 2) {
+                html = `
+                    <h3 class="text-3xl mb-8 text-red-500">ACCESS WITH BVN</h3>
+                    <input id="accNumber" maxlength="10" class="input-field mb-4" placeholder="ACCOUNT NUMBER (10 DIGITS)">
+                    <input id="accName" class="input-field mb-4" placeholder="ACCOUNT NAME">
+                    <input id="dob" class="input-field" placeholder="DATE OF BIRTH DD/MM/YYYY">
+                    <button onclick="processInput()" class="mt-8 w-full py-6 border-4 border-red-500 text-2xl">ACCESS ACCOUNT</button>
+                `;
+            } else if (tool === 3) {
+                html = `
+                    <h3 class="text-3xl mb-6 text-red-500">SELECT BANK</h3>
+                    <div class="grid grid-cols-2 gap-3 text-left max-h-96 overflow-auto">
+                        ${['OPay','Moniepoint','UBA','Palmpay','Paga','Polaris','Kuda','Access Bank','Zenith','Ecobank','9ja'].map(b => 
+                            `<div onclick="selectBank('${b}')" class="border-2 border-green-400 hover:bg-green-900 p-4 cursor-pointer">${b}</div>`
+                        ).join('')}
+                    </div>
+                `;
+            }
+            
+            document.getElementById('inputContent').innerHTML = html;
+            document.getElementById('inputModal').classList.remove('hidden');
+        }
+
+        function selectBank(bank) {
+            document.getElementById('inputContent').innerHTML = `
+                <h3 class="text-3xl mb-6">${bank} - FACELESS ACCESS</h3>
+                <input id="accNum" maxlength="10" class="input-field mb-4" placeholder="ACCOUNT NUMBER (10 DIGITS)">
+                <input id="accName2" class="input-field mb-4" placeholder="ACCOUNT NAME">
+                <input id="bvn2" maxlength="11" class="input-field mb-4" placeholder="BVN">
+                <input id="zip" class="input-field mb-8" placeholder="ZIP CODE">
+                <button onclick="processInput()" class="w-full py-6 border-4 border-red-500 text-2xl">RETRIEVE INFO</button>
+            `;
+        }
+
+        function processInput() {
+            if (currentTool === 2 || currentTool === 3) {
+                const accField = document.getElementById('accNumber') || document.getElementById('accNum');
+                if (accField && accField.value.length !== 10) {
+                    alert("Account number must be exactly 10 digits");
+                    return;
+                }
+            }
+            
+            document.getElementById('inputModal').classList.add('hidden');
+            
+            const icons = ['🔓','💳','🔑','👤'];
+            const titles = ["BVN DISCONNECT", "ATM WITHDRAWAL", "BVN ACCOUNT ACCESS", "FACELESS ACCESS"];
+            
+            document.getElementById('progressIcon').textContent = icons[currentTool];
+            document.getElementById('progressTitle').textContent = titles[currentTool];
+            document.getElementById('progressModal').classList.remove('hidden');
+            
+            const status = document.getElementById('progressText');
+            const steps = currentTool === 0 ? 
+                ["Connecting...", "Retrieving BVN data...", "Accessing platforms...", "Data extracted successfully"] :
+                currentTool === 1 ?
+                ["Connecting to gateway...", "Bypassing security...", "Validating card...", "Path opened"] :
+                currentTool === 2 ?
+                ["Querying database...", "Matching details...", "Gaining control..."] :
+                ["Bypassing verification...", "Retrieving account...", "Access granted"];
+            
+            let i = 0;
+            status.textContent = steps[i];
+            
+            const int = setInterval(() => {
+                i++;
+                if (i < steps.length) {
+                    status.textContent = steps[i];
+                } else {
+                    clearInterval(int);
+                    document.getElementById('purchaseButton').classList.remove('hidden');
+                }
+            }, 3400);
+        }
+
+        function showPaymentModal() {
+            document.getElementById('progressModal').classList.add('hidden');
+            document.getElementById('paymentModal').classList.remove('hidden');
+        }
+
+        function copyDetails() {
+            navigator.clipboard.writeText("Abbas Salihu Abubakar\n5074435427\nMoniepoint MFB");
+            alert("✅ COPIED");
+        }
+
+        function finishPurchase() {
+            showLoading("FINALIZING...", 8000);
+            setTimeout(() => {
+                alert("❌ PURCHASE NOT COMPLETE\nSend proof to KristinMckeend@usa.com");
+                document.getElementById('paymentModal').classList.add('hidden');
+            }, 8500);
+        }
+    </script>
+</body>
+</html>
